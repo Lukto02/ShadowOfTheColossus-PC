@@ -11,7 +11,7 @@ import urllib.parse
 import zipfile
 from pathlib import Path
 
-ISSUES_URL = 'https://github.com/Lucas-blip-png/ShadowOfTheColossus-PC/issues/new'
+ISSUES_URL = 'https://github.com/Lukto02/ShadowOfTheColossus-PC/issues/new'
 TAIL_LINES = 150
 URL_BODY_MAX = 1500    # a browser URL longer than ~8000 characters is refused; the report goes by clipboard
 LOGS = ('last_run.log', 'events.log', 'last_run.1.log', 'events.1.log')

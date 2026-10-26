@@ -1,5 +1,24 @@
 # Changelog
 
+## 0.60.7 — 2026-10-26 (fork Lukto02, sobre a 0.60.6-plus10)
+- **Desempenho, sem baixar nenhum gráfico** (i7-10700F + RTX 5070, as duas versões com PGO, sem limite de FPS):
+  Santuário de Culto de 58 para 74 FPS; arredores do templo de 55-56 para 65-69 FPS, e no trecho mais pesado de 43-45
+  para 50-57 FPS. Esse trecho ainda fica abaixo de 60 FPS neste PC.
+- **Caminhos rápidos de desenho:** draws só de profundidade, passes do G-buffer e binds de texturas reaproveitam o
+  trabalho do draw anterior quando nada mudou; draws que repetem o estado do anterior não copiam nem calculam o hash dos
+  seus dados (DrawReplay, `SOTC_DRAWREPLAY=0` desliga). Cada caminho foi conferido contra o caminho completo (0 diferenças
+  em centenas de milhões de verificações, variáveis `*_VERIFY=1`) e tem seu próprio bit em `bbport_toggles.h`.
+- **Leituras de volta por faixa de bytes:** os dados escritos pela GPU só são lidos de volta onde estão desatualizados,
+  não por páginas inteiras (substitui `SOTC_RB_PARTIAL`; as leituras quentes e o descarte de falhas de leitura da plus10
+  continuam).
+- **Memória:** texturas sem uso saem da VRAM antes, buffers de staging do tamanho da RAM do PC, blocos de memória da GPU
+  de 64 MiB, guarda do heap BPE construída a partir das extensões reais do heap.
+- **60 FPS mais estáveis:** vblank virtual de 480 Hz sob o limite de 60 FPS; com `BB_VBLANK_HZ` acima de 120, "sem
+  limite" no menu para em 120 FPS.
+- `CpFastPaths` e `DispatchFastPath` vêm desligados (ganho pequeno demais); `SOTC_CP_FAST=1` e `SOTC_DISPFAST=1` os ligam.
+- **Lançador:** a atualização automática segue as releases deste fork.
+- O cache de shaders não é refeito.
+
 ## 0.60.6-plus10 — 2026-10-25 (fork Lucas-blip-png)
 - **Texturas menos borradas depois de carregar:** a válvula de LOD da 0.60.6-plus8 passava a mostrar as texturas no nível 5
   (o mais grosso) sempre que o pool de páginas do jogo marcava 0% livre, e depois de cada carregamento o jogo o mantém

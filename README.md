@@ -1,4 +1,40 @@
-# Shadow of the Colossus — PC native port · v0.60.6-plus10
+# Shadow of the Colossus — PC native port · v0.60.7
+
+**0.60.7 is a performance release built on [Lucas-blip-png's 0.60.6-plus10](https://github.com/Lucas-blip-png/ShadowOfTheColossus-PC),
+which builds on [AjncSystem's 0.60.6](https://github.com/AjncSystem/ShadowOfTheColossus-PC).** Everything in plus10 is kept
+(texture quality selector, grass and weed menu, FSR 3.1 and DLSS 4.5, the stale-data and leak fixes). On top of it, this
+fork makes the port's draw and readback work faster, without lowering any graphics setting. The changes are also offered
+to the original project as [PR #308](https://github.com/AjncSystem/ShadowOfTheColossus-PC/pull/308).
+
+What 0.60.7 adds over 0.60.6-plus10 (i7-10700F + RTX 5070, both builds with PGO, uncapped):
+
+| Scene | 0.60.6-plus10 | 0.60.7 |
+|---|---|---|
+| Shrine of Worship, idle | 58 FPS | 74 FPS (+27%) |
+| Temple surroundings, normal | 55-56 FPS | 65-69 FPS |
+| Temple surroundings, heaviest stretch | 43-45 FPS | 50-57 FPS |
+
+- **Draw fast paths:** depth-only draws, G-buffer render passes and texture binds reuse the previous draw's work when
+  nothing changed, and draws that repeat the previous draw's state no longer copy and hash its data (DrawReplay). Every
+  fast path was checked against the full path (0 differences in hundreds of millions of checks) and can be turned off
+  on its own.
+- **Readbacks by byte range:** data written by the GPU is read back only where it is stale, not by whole pages.
+- **Memory:** unused textures leave VRAM sooner, staging buffers are sized by the PC's RAM, larger GPU memory blocks,
+  a BPE heap guard built from the heap's real extents.
+- **Steadier 60 FPS:** 480 Hz virtual vblank under the 60 FPS limit.
+- The launcher's self-update follows this fork's releases.
+
+The heaviest stretch around the temple still runs below 60 FPS on this PC; that is the next target.
+
+**Em português:** a 0.60.7 é uma versão de desempenho feita sobre a 0.60.6-plus10 de Lucas-blip-png (que parte da
+0.60.6 de AjncSystem). Mantém tudo da plus10 (seletor de qualidade de texturas, menu de grama, FSR 3.1 e DLSS 4.5) e
+acrescenta caminhos rápidos de desenho e de leitura de volta, sem baixar nenhum gráfico: Santuário de Culto de 58 para
+74 FPS sem limite, arredores do templo de 55-56 para 65-69 FPS (trecho mais pesado: de 43-45 para 50-57). Detalhes no
+[CHANGELOG](CHANGELOG.md).
+
+**[⬇ Download the latest release](../../releases/latest)** · bring your own game dump · Windows 10/11, Vulkan 1.3
+
+## From 0.60.6-plus10 (Lucas-blip-png)
 
 **The original 0.60.6, plus CPUs without BMI1 (pre-Haswell), CPUs with 4 threads, 120 Hz
 fullscreen, a 32-lane fix for AMD GCN cards (RX 470–590, to test), and the FSR 3.1 and DLSS 4.5 upscalers (NVIDIA RTX).** Everything in [AjncSystem's 0.60.6](https://github.com/AjncSystem/ShadowOfTheColossus-PC)
@@ -34,8 +70,6 @@ What it adds:
 - **Fullscreen at 120 Hz** on 144/165 Hz monitors, so every frame stays on screen as long (Anthonypc23).
 - The launcher's self-update follows this fork's releases; the launcher no longer stops when its
   console refuses writes (issue #104).
-
-**[⬇ Download the latest release](../../releases/latest)** · bring your own game dump · Windows 10/11, Vulkan 1.3
 
 ---
 
@@ -210,6 +244,7 @@ game needs, in the style of [bloodborne_pc](https://github.com/Supermedo/bloodbo
 
 | Version | Improvements and fixes |
 |---|---|
+| **0.60.7** | **Lukto02 fork, on 0.60.6-plus10:** draw fast paths (depth-only, G-buffer, texture binds, DrawReplay), readbacks by byte range, memory work and 480 Hz pacing, without lowering graphics. Shrine of Worship 58 → 74 FPS, temple surroundings 55-56 → 65-69 FPS (i7-10700F + RTX 5070, uncapped). |
 | **0.60.6-plus10** | **Lucas-blip-png fork:** textures are no longer stuck at the coarsest level after every load (the page-pool valve only goes to mip 5 while the pool is falling, not within 60 s of a load). |
 | **0.60.6-plus9** | **Lucas-blip-png fork:** launcher options to turn the controller vibration off and to generate frames without the interface (no shaking health/stamina bars); pad-recording fix. |
 | **0.60.6-plus8** | **Lucas-blip-png fork:** automatic VRAM tier from the card's budget (new launcher default); FSR 3.1/DLSS render size up to 1440p; stronger texture-pool LOD valve against the `0x1a371` crash; GPU time and wait diagnostics. |
