@@ -1,5 +1,22 @@
 # Changelog
 
+## 0.60.8 — 2026-10-27 (fork Lukto02, sobre a 0.60.6-plus16)
+- **Vazamento de memória corrigido:** os quadros das tarefas aninhadas do processador de comandos (um por buffer indireto,
+  ~700 por segundo) nunca eram liberados: ~44 MB por minuto, 2,6 GB por hora. Agora são liberados depois que a thread de
+  desenho consumiu tudo o que eles enfileiraram (`SOTC_CP_FREE_TASKS=0` volta ao antigo). Santuário parado 10 min: +0,4 MB/min
+  (antes +44). A armadilha `SOTC_TASK_GUARD=1 SOTC_CP_FREE_NOW=1` (qualquer acesso a um quadro liberado falha) rodou sem
+  falhas no Santuário, na rota do templo e em 10 min do demo da tela de título.
+- **Sujeira nas texturas depois da ponte para o segundo colosso** (pedras com ruído arco-íris, blocos pretos nos muros,
+  grama desenhada como quadrados): vinha do patch do alocador de páginas da queda `0x1a371`. Bisseção jogando: com o patch,
+  3 de 3 sessões com sujeira; sem ele, 0 de 2, com e sem as outras mudanças. Agora é opcional (`SOTC_POOL_FIX=1`); o
+  lançador continua usando-o com texturas Máxima no modo PS4 Pro, que caía sem ele.
+- **Texturas da 0.60.6-C1:** ExpandImage só copia a imagem antiga quando ela tem dados da GPU (`SOTC_EXPAND_COPY_STALE=1`
+  volta ao antigo), cópias DMA marcam todas as imagens sobrepostas (`SOTC_DMA_OVERLAP=0`), textura de outro tamanho numa
+  vaga reaproveitada substitui a antiga (`SOTC_REUSE_SIZE_CHECK=0`).
+- **Diagnóstico:** `SOTC_FRAMETIME_OUT=<arquivo>` (com `SOTC_FPS=1`) grava cada quadro; `tools/sotc_frametimes.py` dá
+  percentis, 1% e 0,1% low, travadas e a divisão por carga.
+- Lançador: versão 0.60.8; atualização automática e "Reportar problema" apontam para este fork.
+
 ## 0.60.6-plus16 — 2026-10-27 (fork Lucas-blip-png)
 - **Barras de vida e stamina em telas 21:9 e mais largas (#301, #202, #145, #315):** o objeto de tela do HUD mantém o aspecto 16:9
   (pedaço cinza na barra de vida) e os dois retângulos de 1920 de largura da barra de stamina são escalados (a barra amarela parava
