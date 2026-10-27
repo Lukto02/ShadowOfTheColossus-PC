@@ -1,8 +1,8 @@
 # Shadow of the Colossus — PC native port · v0.60.8
 
-**0.60.8 is built on [Lucas-blip-png's 0.60.6-plus16](https://github.com/Lucas-blip-png/ShadowOfTheColossus-PC)** (which
+**0.60.8 is built on [Lucas-blip-png's 0.60.6-plus17](https://github.com/Lucas-blip-png/ShadowOfTheColossus-PC)** (which
 builds on [AjncSystem's 0.60.6](https://github.com/AjncSystem/ShadowOfTheColossus-PC) and already includes this fork's 0.60.7
-performance work, merged from [PR #308](https://github.com/AjncSystem/ShadowOfTheColossus-PC/pull/308)). Everything in plus16 is
+performance work, merged from [PR #308](https://github.com/AjncSystem/ShadowOfTheColossus-PC/pull/308)). Everything in plus17 is
 kept. On top of it, 0.60.8 fixes a memory leak and the texture garbage past the second colossus' bridge:
 
 - **No more memory leak:** the port kept every finished indirect command buffer (~700 a second), ~44 MB a minute,
@@ -15,13 +15,13 @@ kept. On top of it, 0.60.8 fixes a memory leak and the texture garbage past the 
   hitches, by scene load).
 - The launcher's self-update and problem reports point to this fork.
 
-**Em português:** a 0.60.8 é feita sobre a 0.60.6-plus16 de Lucas-blip-png (que já inclui o trabalho de desempenho da 0.60.7
+**Em português:** a 0.60.8 é feita sobre a 0.60.6-plus17 de Lucas-blip-png (que já inclui o trabalho de desempenho da 0.60.7
 deste fork). Corrige um vazamento de memória (~2,6 GB por hora) e a sujeira nas texturas depois da ponte para o segundo
 colosso (o patch do alocador de páginas do `0x1a371` agora é opcional, `SOTC_POOL_FIX=1`). Detalhes no [CHANGELOG](CHANGELOG.md).
 
 **[⬇ Download the latest release](../../releases/latest)** · Windows 10/11, Vulkan 1.3
 
-## From 0.60.6-plus16 (Lucas-blip-png)
+## From 0.60.6-plus17 (Lucas-blip-png)
 
 **The original 0.60.6, plus CPUs without BMI1 (pre-Haswell), CPUs with 4 threads, 120 Hz
 fullscreen, a 32-lane fix for AMD GCN cards (RX 470–590, to test), and the FSR 3.1 and DLSS 4.5 upscalers (NVIDIA RTX).** Everything in [AjncSystem's 0.60.6](https://github.com/AjncSystem/ShadowOfTheColossus-PC)
@@ -233,7 +233,8 @@ game needs, in the style of [bloodborne_pc](https://github.com/Supermedo/bloodbo
 
 | Version | Improvements and fixes |
 |---|---|
-| **0.60.8** | **Lukto02 fork, on 0.60.6-plus16:** memory leak fixed (finished indirect command buffers were kept, ~2.6 GB an hour); the `0x1a371` page allocator patch, which caused rainbow and blocky textures past the second colossus' bridge, is opt-in (`SOTC_POOL_FIX=1`, still on for Maximum in PS4 Pro mode); texture cache fixes from 0.60.6-C1; per-frame frame-time log. |
+| **0.60.8** | **Lukto02 fork, on 0.60.6-plus17:** memory leak fixed (finished indirect command buffers were kept, ~2.6 GB an hour); the `0x1a371` page allocator patch, which caused rainbow and blocky textures past the second colossus' bridge, is opt-in (`SOTC_POOL_FIX=1`, still on for Maximum in PS4 Pro mode); texture cache fixes from 0.60.6-C1; per-frame frame-time log. |
+| **0.60.6-plus17** | **Lucas-blip-png fork:** hotfix: the launcher closed on start in plus15 and plus16 (`KeyError: 'fx_sunshadows'`, #316, reported by geosaw616). |
 | **0.60.6-plus16** | **Lucas-blip-png fork:** health and stamina bars in 21:9 and wider (#301, #202, #145; AjncSystem's 0.60.6-C2 work, original authorship kept); shader cache read from one pack file (`cache.sotcpack`, AjncSystem), faster boots on hard disks. |
 | **0.60.6-plus15** | **Lucas-blip-png fork:** launcher option to turn the sun shadows off (+34% FPS in 4isaque4's measurement, #294); RX 9070 XT out-of-device-memory buffers are retried without dedicated memory and then in system memory (#293, reported by Coriolys); stutter diagnostics and notes (`docs/sotc/STUTTER.md`). |
 | **0.60.6-plus14** | **Lucas-blip-png fork:** the command-processor and dispatch fast paths of Lukto02's PR #308, off by default there, are on (Shrine 71.7 -> 75.5 FPS in A/B, 0 mismatches in >50 M verify checks) with a retrained PGO profile. `SOTC_CP_FAST=0` / `SOTC_DISPFAST=0` turn them off. |

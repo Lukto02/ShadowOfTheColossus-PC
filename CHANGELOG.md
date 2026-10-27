@@ -1,6 +1,6 @@
 # Changelog
 
-## 0.60.8 — 2026-10-27 (fork Lukto02, sobre a 0.60.6-plus16)
+## 0.60.8 — 2026-10-27 (fork Lukto02, sobre a 0.60.6-plus17)
 - **Vazamento de memória corrigido:** os quadros das tarefas aninhadas do processador de comandos (um por buffer indireto,
   ~700 por segundo) nunca eram liberados: ~44 MB por minuto, 2,6 GB por hora. Agora são liberados depois que a thread de
   desenho consumiu tudo o que eles enfileiraram (`SOTC_CP_FREE_TASKS=0` volta ao antigo). Santuário parado 10 min: +0,4 MB/min
@@ -16,6 +16,10 @@
 - **Diagnóstico:** `SOTC_FRAMETIME_OUT=<arquivo>` (com `SOTC_FPS=1`) grava cada quadro; `tools/sotc_frametimes.py` dá
   percentis, 1% e 0,1% low, travadas e a divisão por carga.
 - Lançador: versão 0.60.8; atualização automática e "Reportar problema" apontam para este fork.
+## 0.60.6-plus17 — 2026-10-27 (fork Lucas-blip-png)
+- **Correção urgente: o lançador fechava ao abrir nas versões plus15 e plus16** (`KeyError: 'fx_sunshadows'`, relato de geosaw616 no #316).
+  A opção "Sombras do sol" tinha entrado sem valor padrão. Agora tem, e um teste confere que todo efeito do lançador tem padrão.
+  Quem está no plus15 ou no plus16 deve baixar esta versão (o atualizador do lançador não abre nelas).
 
 ## 0.60.6-plus16 — 2026-10-27 (fork Lucas-blip-png)
 - **Barras de vida e stamina em telas 21:9 e mais largas (#301, #202, #145, #315):** o objeto de tela do HUD mantém o aspecto 16:9
